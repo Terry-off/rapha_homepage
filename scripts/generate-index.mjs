@@ -1,13 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { generateSubpages } from './generate-subpages.mjs';
-import { pages as submenuPages } from './page-data.mjs';
+import { generateSubpages, STATIC_ROUTE_SLUGS } from './generate-subpages.mjs';
 
 const root = process.cwd();
 const sourcePath = path.join(root, 'reference', 'playwright-snapshot.html');
 const rootPages = ['index.html', '404.html'];
 const SITE_ORIGIN = 'https://www.raphamedian.com';
-const routePaths = Object.keys(submenuPages).map((slug) => `/${slug}`);
+const routePaths = STATIC_ROUTE_SLUGS.map((slug) => `/${slug}`);
 
 if (!fs.existsSync(sourcePath)) {
   throw new Error(`Missing source snapshot: ${sourcePath}`);
@@ -49,6 +48,6 @@ fs.writeFileSync(
   html.replace(/<\/body>/i, `${routeRedirectScript}\n</body>`)
 );
 
-generateSubpages();
+await generateSubpages();
 
 console.log(`Generated ${rootPages.join(', ')} and submenu pages from ${path.basename(sourcePath)}`);

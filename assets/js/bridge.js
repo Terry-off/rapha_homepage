@@ -10,7 +10,7 @@ if (typeof window.$ !== 'function') {
   window.$ = (value) => value;
 }
 
-const RAPHA_HOSTS = new Set(['raphamedian.com', 'www.raphamedian.com']);
+const RAPHA_HOSTS = new Set(['raphamedian.com', 'www.raphamedian.com', 'raphamedian.imweb.me']);
 const STATIC_ROUTE_PATHS = new Set([
   '/service',
   '/21',
