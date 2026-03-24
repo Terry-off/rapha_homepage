@@ -1,11 +1,96 @@
-body#doz_body #privacy .form-control {
-  height: 160px;
-  padding: 10px;
-  overflow: auto;
-  line-height: 25.7143px;
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 
-body#doz_body #doz_footer_wrap .inside {
-  padding-left: 10px;
-  padding-right: 10px;
+body {
+  overflow: hidden;
+  background: #ffffff;
+  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+}
+
+.site-shell {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.site-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #ffffff;
+}
+
+.site-fallback {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at top, rgba(49, 130, 246, 0.08), transparent 42%),
+    #ffffff;
+  color: #121212;
+  text-align: center;
+}
+
+.site-shell.is-fallback .site-fallback {
+  display: flex;
+}
+
+.site-shell.is-fallback .site-frame {
+  display: none;
+}
+
+.site-fallback__inner {
+  max-width: 520px;
+}
+
+.site-fallback__eyebrow {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #3182f6;
+}
+
+.site-fallback__title {
+  margin: 0;
+  font-size: clamp(32px, 5vw, 52px);
+  line-height: 1.1;
+}
+
+.site-fallback__body {
+  margin: 18px 0 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #4b5563;
+}
+
+.site-fallback__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 28px;
+  padding: 14px 24px;
+  border-radius: 999px;
+  background: #121212;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.site-fallback__link:hover,
+.site-fallback__link:focus-visible {
+  transform: translateY(-1px);
+  opacity: 0.92;
 }

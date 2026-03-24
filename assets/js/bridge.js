@@ -1,7 +1,37 @@
-window.__RAPHA_CLONE__ = {
-  source: 'https://www.raphamedian.com/',
-  capturedAt: '2026-03-24'
+const source = 'https://www.raphamedian.com/';
+const shell = document.querySelector('[data-site-shell]');
+const frame = document.querySelector('[data-site-frame]');
+const fallback = document.querySelector('[data-site-fallback]');
+const sourceLinks = document.querySelectorAll('[data-open-source]');
+
+const showFallback = () => {
+  shell?.classList.add('is-fallback');
+  fallback?.removeAttribute('hidden');
 };
 
-document.documentElement.style.scrollBehavior = 'smooth';
-document.body.classList.add('page_ready');
+for (const link of sourceLinks) {
+  link.href = source;
+}
+
+let loaded = false;
+const fallbackTimer = window.setTimeout(() => {
+  if (!loaded) {
+    showFallback();
+  }
+}, 12000);
+
+frame?.addEventListener('load', () => {
+  loaded = true;
+  window.clearTimeout(fallbackTimer);
+});
+
+frame?.addEventListener('error', () => {
+  window.clearTimeout(fallbackTimer);
+  showFallback();
+});
+
+window.__RAPHA_CLONE__ = {
+  mode: 'live-frame',
+  source,
+  updatedAt: '2026-03-25'
+};

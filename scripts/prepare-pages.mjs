@@ -12,7 +12,7 @@ const copy = (from, to) => {
 };
 
 copy('index.html', 'index.html');
-copy('index.html', '404.html');
+copy('404.html', '404.html');
 copy('assets', 'assets');
 
 fs.writeFileSync(path.join(distDir, '.nojekyll'), '');
