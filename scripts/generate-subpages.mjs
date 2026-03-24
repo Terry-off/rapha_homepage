@@ -7,6 +7,18 @@ const IMWEB_ORIGIN = 'https://raphamedian.imweb.me';
 const MIRRORED_GLOBAL_COMPAT_CSS = `<style>
 body#doz_body #doz_footer_wrap .footer-section {
   padding: 50px 0 !important;
+  line-height: 30.6px !important;
+}
+
+body#doz_body #doz_footer_wrap .footer-section,
+body#doz_body #doz_footer_wrap .footer-section a,
+body#doz_body #doz_footer_wrap .footer-section .site-brand,
+body#doz_body #doz_footer_wrap .footer-section .custom-text,
+body#doz_body #doz_footer_wrap .footer-section .custom-text .custom-text-info,
+body#doz_body #doz_footer_wrap .footer-section .foot-main-nav,
+body#doz_body #doz_footer_wrap .footer-section .foot-foot-nav,
+body#doz_body #doz_footer_wrap .footer-section .plain_name {
+  line-height: 30.6px !important;
 }
 
 body#doz_body #doz_footer_wrap,
