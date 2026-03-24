@@ -4,6 +4,8 @@ window.__RAPHA_CLONE__ = {
   updatedAt: '2026-03-25'
 };
 
+window.SITE = window.SITE || {};
+
 if (typeof window.$ !== 'function') {
   window.$ = (value) => value;
 }
@@ -23,6 +25,22 @@ const revealWidgets = () => {
     node.style.animation = 'none';
   }
 };
+
+const openAbsoluteUrl = (url) => {
+  if (!url) {
+    return;
+  }
+
+  window.location.href = url;
+};
+
+if (typeof window.SITE.openPolicy !== 'function') {
+  window.SITE.openPolicy = () => openAbsoluteUrl('https://www.raphamedian.com/?mode=policy');
+}
+
+if (typeof window.SITE.openPrivacy !== 'function') {
+  window.SITE.openPrivacy = () => openAbsoluteUrl('https://www.raphamedian.com/?mode=privacy');
+}
 
 const popupStorageKey = (id) => `rapha-popup-hidden:${id}`;
 
@@ -78,21 +96,161 @@ window.popupCookieMake = (id) => {
   return false;
 };
 
+const createMenuLink = (href, text, className) => {
+  const link = document.createElement('a');
+  link.href = href;
+  link.textContent = text;
+  link.className = className;
+  return link;
+};
+
+const buildMobileMenu = () => {
+  if (document.querySelector('.rapha-mobile-menu-toggle')) {
+    return;
+  }
+
+  const sourceRoot =
+    document.querySelector('#doz_header_wrap ._main_clone_menu') ||
+    document.querySelector('#doz_header_wrap .main_clone_menu') ||
+    document.querySelector('#doz_header_wrap .viewport-nav.desktop._main_menu');
+
+  if (!sourceRoot) {
+    return;
+  }
+
+  const sourceItems = [...sourceRoot.children].filter(
+    (item) => item.tagName === 'LI' && !item.classList.contains('_more_menu')
+  );
+
+  if (!sourceItems.length) {
+    return;
+  }
+
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'rapha-mobile-menu-toggle';
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.setAttribute('aria-controls', 'rapha-mobile-menu');
+  toggle.setAttribute('aria-label', '모바일 메뉴 열기');
+  toggle.innerHTML = '<span></span><span></span><span></span>';
+
+  const menu = document.createElement('div');
+  menu.className = 'rapha-mobile-menu';
+  menu.id = 'rapha-mobile-menu';
+  menu.innerHTML = `
+    <button type="button" class="rapha-mobile-menu__backdrop" aria-label="메뉴 닫기"></button>
+    <aside class="rapha-mobile-menu__drawer" aria-hidden="true">
+      <p class="rapha-mobile-menu__title">SITE MENU</p>
+      <nav class="rapha-mobile-menu__nav" aria-label="모바일 메뉴">
+        <ul class="rapha-mobile-menu__list"></ul>
+      </nav>
+    </aside>
+  `;
+
+  const list = menu.querySelector('.rapha-mobile-menu__list');
+
+  for (const item of sourceItems) {
+    const topLink = item.querySelector(':scope > a[href]');
+
+    if (!topLink) {
+      continue;
+    }
+
+    const li = document.createElement('li');
+    li.className = 'rapha-mobile-menu__item';
+    li.appendChild(
+      createMenuLink(
+        topLink.href,
+        (topLink.textContent || '').trim(),
+        'rapha-mobile-menu__link'
+      )
+    );
+
+    const childLinks = [...item.querySelectorAll(':scope > ul > li > a[href]')];
+
+    if (childLinks.length) {
+      const subList = document.createElement('ul');
+      subList.className = 'rapha-mobile-menu__sublist';
+
+      for (const child of childLinks) {
+        const subItem = document.createElement('li');
+        subItem.appendChild(
+          createMenuLink(
+            child.href,
+            (child.textContent || '').trim(),
+            'rapha-mobile-menu__sublink'
+          )
+        );
+        subList.appendChild(subItem);
+      }
+
+      li.appendChild(subList);
+    }
+
+    list.appendChild(li);
+  }
+
+  const openMenu = () => {
+    document.body.classList.add('rapha-mobile-menu-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    menu.querySelector('.rapha-mobile-menu__drawer')?.setAttribute('aria-hidden', 'false');
+  };
+
+  const closeMenu = () => {
+    document.body.classList.remove('rapha-mobile-menu-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    menu.querySelector('.rapha-mobile-menu__drawer')?.setAttribute('aria-hidden', 'true');
+  };
+
+  toggle.addEventListener('click', () => {
+    if (document.body.classList.contains('rapha-mobile-menu-open')) {
+      closeMenu();
+      return;
+    }
+
+    openMenu();
+  });
+
+  menu.querySelector('.rapha-mobile-menu__backdrop')?.addEventListener('click', closeMenu);
+  menu.querySelector('.rapha-mobile-menu__nav')?.addEventListener('click', (event) => {
+    if (event.target instanceof HTMLAnchorElement) {
+      closeMenu();
+    }
+  });
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeMenu();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 991) {
+      closeMenu();
+    }
+  });
+
+  document.body.append(toggle, menu);
+};
+
 if (document.readyState === 'loading') {
   document.addEventListener(
     'DOMContentLoaded',
     () => {
       revealWidgets();
       restoreSavedPopupState();
+      buildMobileMenu();
     },
     { once: true }
   );
 } else {
   revealWidgets();
   restoreSavedPopupState();
+  buildMobileMenu();
 }
 
 window.addEventListener('load', () => {
   revealWidgets();
   restoreSavedPopupState();
+  buildMobileMenu();
 });

@@ -12,6 +12,27 @@ body#doz_body #doz_footer_wrap .footer-section {
   padding: 50px 0 !important;
 }
 
+body#doz_body #doz_footer_wrap,
+body#doz_body #doz_footer,
+body#doz_body #doz_footer .footer-section,
+body#doz_body #doz_footer .inside,
+body#doz_body #doz_footer .doz_row {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+body#doz_body #doz_footer .inside,
+body#doz_body #doz_footer .doz_row {
+  display: flow-root !important;
+}
+
+body#doz_body #doz_footer .inside::after,
+body#doz_body #doz_footer .doz_row::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
 body#doz_body #doz_footer_wrap .inside {
   margin-left: 130px !important;
   margin-right: 130px !important;
@@ -67,4 +88,152 @@ body#doz_body .popup-banner-wrap .pop-container.is-hidden {
 body#doz_body .popup-banner-wrap .btn-group .btn,
 body#doz_body .popup-banner-wrap .pop-img .del {
   cursor: pointer;
+}
+
+body#doz_body .rapha-mobile-menu-toggle,
+body#doz_body .rapha-mobile-menu {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  body#doz_body #doz_footer_wrap,
+  body#doz_body #doz_footer,
+  body#doz_body #doz_footer .footer-section {
+    min-height: 220px !important;
+  }
+
+  body#doz_body #doz_footer_wrap .inside {
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+  }
+
+  body#doz_body .rapha-mobile-menu-toggle {
+    position: fixed;
+    top: 14px;
+    right: 74px;
+    z-index: 1400;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 8px 24px rgba(18, 18, 18, 0.12);
+    color: #121212;
+  }
+
+  body#doz_body .rapha-mobile-menu-toggle span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    margin: 0 auto;
+    border-radius: 999px;
+    background: currentColor;
+    transition: transform 220ms ease, opacity 220ms ease;
+  }
+
+  body#doz_body.rapha-mobile-menu-open .rapha-mobile-menu-toggle span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  body#doz_body.rapha-mobile-menu-open .rapha-mobile-menu-toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  body#doz_body.rapha-mobile-menu-open .rapha-mobile-menu-toggle span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  body#doz_body .rapha-mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 1390;
+    display: block;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 220ms ease;
+  }
+
+  body#doz_body .rapha-mobile-menu__backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: rgba(18, 18, 18, 0.45);
+  }
+
+  body#doz_body .rapha-mobile-menu__drawer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(86vw, 360px);
+    height: 100%;
+    padding: 84px 22px 28px;
+    overflow-y: auto;
+    background: #ffffff;
+    box-shadow: -20px 0 40px rgba(18, 18, 18, 0.18);
+    transform: translateX(100%);
+    transition: transform 260ms ease;
+  }
+
+  body#doz_body .rapha-mobile-menu__title {
+    margin: 0 0 22px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #3182f6;
+  }
+
+  body#doz_body .rapha-mobile-menu__list,
+  body#doz_body .rapha-mobile-menu__sublist {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  body#doz_body .rapha-mobile-menu__item + .rapha-mobile-menu__item {
+    margin-top: 18px;
+  }
+
+  body#doz_body .rapha-mobile-menu__link {
+    display: block;
+    color: #121212;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+  }
+
+  body#doz_body .rapha-mobile-menu__sublist {
+    margin-top: 10px;
+    padding-left: 2px;
+  }
+
+  body#doz_body .rapha-mobile-menu__sublist li + li {
+    margin-top: 8px;
+  }
+
+  body#doz_body .rapha-mobile-menu__sublink {
+    display: block;
+    color: #4b5563;
+    font-size: 15px;
+    line-height: 1.4;
+    text-decoration: none;
+  }
+
+  body#doz_body.rapha-mobile-menu-open {
+    overflow: hidden;
+  }
+
+  body#doz_body.rapha-mobile-menu-open .rapha-mobile-menu {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  body#doz_body.rapha-mobile-menu-open .rapha-mobile-menu__drawer {
+    transform: translateX(0);
+  }
 }
