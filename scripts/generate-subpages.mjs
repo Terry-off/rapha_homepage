@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { menuTree, pages, siteInfo } from './page-data.mjs';
 
 const root = process.cwd();
+const staticRoutePaths = new Set(Object.keys(pages).map((slug) => `/${slug}`));
 
 const htmlEscape = (value = '') =>
   String(value)
@@ -15,6 +16,14 @@ const htmlEscape = (value = '') =>
 const isActiveItem = (item, currentPath) =>
   item.href === currentPath || item.children?.some((child) => child.href === currentPath);
 
+const toRouteHref = (href) => {
+  if (!href || href === '/') {
+    return href || '/';
+  }
+
+  return staticRoutePaths.has(href) ? `${href}/index.html` : href;
+};
+
 const renderDesktopMenu = (currentPath) =>
   menuTree
     .map((item) => {
@@ -25,7 +34,7 @@ const renderDesktopMenu = (currentPath) =>
               ${item.children
                 .map((child) => {
                   const childClass = child.href === currentPath ? ' is-current' : '';
-                  return `<a class="site-nav__dropdown-link${childClass}" href="${child.href}" role="menuitem">${htmlEscape(child.label)}</a>`;
+                  return `<a class="site-nav__dropdown-link${childClass}" href="${toRouteHref(child.href)}" role="menuitem">${htmlEscape(child.label)}</a>`;
                 })
                 .join('')}
             </div>
@@ -34,7 +43,7 @@ const renderDesktopMenu = (currentPath) =>
 
       return `
         <li class="site-nav__item${activeClass}">
-          <a class="site-nav__link" href="${item.href}">${htmlEscape(item.label)}</a>
+          <a class="site-nav__link" href="${toRouteHref(item.href)}">${htmlEscape(item.label)}</a>
           ${childrenMarkup}
         </li>
       `;
@@ -49,19 +58,19 @@ const renderMobileMenu = (currentPath) =>
         ? `
             <details class="mobile-nav__group"${isOpen}>
               <summary class="mobile-nav__summary">
-                <a class="mobile-nav__parent-link" href="${item.href}">${htmlEscape(item.label)}</a>
+                <a class="mobile-nav__parent-link" href="${toRouteHref(item.href)}">${htmlEscape(item.label)}</a>
               </summary>
               <div class="mobile-nav__children">
                 ${item.children
                   .map((child) => {
                     const childClass = child.href === currentPath ? ' is-current' : '';
-                    return `<a class="mobile-nav__child${childClass}" href="${child.href}">${htmlEscape(child.label)}</a>`;
+                    return `<a class="mobile-nav__child${childClass}" href="${toRouteHref(child.href)}">${htmlEscape(child.label)}</a>`;
                   })
                   .join('')}
               </div>
             </details>
           `
-        : `<a class="mobile-nav__single" href="${item.href}">${htmlEscape(item.label)}</a>`;
+        : `<a class="mobile-nav__single" href="${toRouteHref(item.href)}">${htmlEscape(item.label)}</a>`;
 
       return `<li class="mobile-nav__item">${childrenMarkup}</li>`;
     })
@@ -79,7 +88,7 @@ const renderCards = (cards = []) => {
           ${cards
             .map(
               (card) => `
-                <a class="info-card" href="${card.href}">
+                <a class="info-card" href="${toRouteHref(card.href)}">
                   <span class="info-card__media">${card.image ? `<img src="${card.image}" alt="${htmlEscape(card.title)}">` : ''}</span>
                   <span class="info-card__body">
                     <strong>${htmlEscape(card.title)}</strong>
@@ -183,7 +192,7 @@ const renderLocation = () => `
           </ul>
           <div class="location-panel__actions">
             <a class="action-button" href="tel:${siteInfo.phone.replaceAll('-', '')}">전화 문의</a>
-            <a class="action-button action-button--ghost" href="/23">상세 위치 보기</a>
+            <a class="action-button action-button--ghost" href="${toRouteHref('/23')}">상세 위치 보기</a>
           </div>
         </div>
         <div class="location-panel__media">
@@ -217,7 +226,7 @@ const renderFooter = () => `
       <img src="${siteInfo.logo}" alt="${htmlEscape(siteInfo.name)}">
     </div>
     <nav class="site-footer__nav" aria-label="푸터 메뉴">
-      ${menuTree.map((item) => `<a href="${item.href}">${htmlEscape(item.label)}</a>`).join('')}
+      ${menuTree.map((item) => `<a href="${toRouteHref(item.href)}">${htmlEscape(item.label)}</a>`).join('')}
     </nav>
     <div class="site-footer__meta">
       <p>${htmlEscape(siteInfo.name)}</p>

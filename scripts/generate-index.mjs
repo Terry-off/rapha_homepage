@@ -1,17 +1,32 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { generateSubpages } from './generate-subpages.mjs';
+import { pages as submenuPages } from './page-data.mjs';
 
 const root = process.cwd();
 const sourcePath = path.join(root, 'reference', 'playwright-snapshot.html');
-const pages = ['index.html', '404.html'];
+const rootPages = ['index.html', '404.html'];
 const SITE_ORIGIN = 'https://www.raphamedian.com';
+const routePaths = Object.keys(submenuPages).map((slug) => `/${slug}`);
 
 if (!fs.existsSync(sourcePath)) {
   throw new Error(`Missing source snapshot: ${sourcePath}`);
 }
 
 let html = fs.readFileSync(sourcePath, 'utf8');
+const routeRedirectScript = `
+<script>
+  (function () {
+    const staticRoutes = new Set(${JSON.stringify(routePaths)});
+    const normalizedPath = window.location.pathname.replace(/\\/index\\.html$/i, '').replace(/\\/$/, '') || '/';
+
+    if (!staticRoutes.has(normalizedPath)) {
+      return;
+    }
+
+    window.location.replace(normalizedPath + '/index.html' + window.location.search + window.location.hash);
+  })();
+</script>`;
 
 html = html
   .replace(/\b(href|src|action)=("|')\/(?!\/)/g, `$1=$2${SITE_ORIGIN}/`)
@@ -28,11 +43,12 @@ html = html
     `\n<script type="module" src="./assets/js/bridge.js"></script>\n</body>`
   );
 
-for (const page of pages) {
-  const targetPath = path.join(root, page);
-  fs.writeFileSync(targetPath, html);
-}
+fs.writeFileSync(path.join(root, 'index.html'), html);
+fs.writeFileSync(
+  path.join(root, '404.html'),
+  html.replace(/<\/body>/i, `${routeRedirectScript}\n</body>`)
+);
 
 generateSubpages();
 
-console.log(`Generated ${pages.join(', ')} from ${path.basename(sourcePath)}`);
+console.log(`Generated ${rootPages.join(', ')} and submenu pages from ${path.basename(sourcePath)}`);

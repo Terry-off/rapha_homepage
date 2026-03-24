@@ -11,6 +11,31 @@ if (typeof window.$ !== 'function') {
 }
 
 const RAPHA_HOSTS = new Set(['raphamedian.com', 'www.raphamedian.com']);
+const STATIC_ROUTE_PATHS = new Set([
+  '/service',
+  '/21',
+  '/24',
+  '/23',
+  '/prolo',
+  '/25',
+  '/26',
+  '/download',
+  '/27',
+  '/28',
+  '/29',
+  '/30',
+  '/31',
+  '/32',
+  '/news',
+  '/33',
+  '/34',
+  '/35',
+  '/36',
+  '/37',
+  '/38',
+  '/39',
+  '/40'
+]);
 
 document.documentElement.style.scrollBehavior = 'smooth';
 document.body.classList.add('page_ready');
@@ -48,12 +73,17 @@ const normalizeInternalLinks = () => {
 
     try {
       const url = new URL(rawHref, window.location.href);
+      const normalizedPath = url.pathname.replace(/\/index\.html$/i, '').replace(/\/$/, '') || '/';
 
       if (!RAPHA_HOSTS.has(url.hostname)) {
         continue;
       }
 
-      link.setAttribute('href', `${url.pathname}${url.search}${url.hash}`);
+      const href = STATIC_ROUTE_PATHS.has(normalizedPath)
+        ? `${normalizedPath}/index.html${url.search}${url.hash}`
+        : `${url.pathname}${url.search}${url.hash}`;
+
+      link.setAttribute('href', href);
     } catch {
       // Ignore malformed href values in snapshot markup.
     }
