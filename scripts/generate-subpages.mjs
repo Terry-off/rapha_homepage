@@ -4,6 +4,21 @@ import { fileURLToPath } from 'node:url';
 
 const root = process.cwd();
 const IMWEB_ORIGIN = 'https://raphamedian.imweb.me';
+const MIRRORED_COMPAT_CSS_BY_SLUG = {
+  '23': `<style>
+.doz_sys #addFormw2025112066e541ac21198 .form-group.privacy .form-control {
+  height: 160px !important;
+  min-height: 160px !important;
+  padding: 10px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  line-height: 25.7143px !important;
+  white-space: normal !important;
+  word-break: keep-all !important;
+  overflow-wrap: break-word !important;
+}
+</style>`
+};
 
 export const STATIC_ROUTE_SLUGS = [
   'service',
@@ -68,6 +83,7 @@ const rewriteAnchorHref = (rawPath) => {
 
 const transformMirroredHtml = (html, slug) => {
   const currentRoute = `/${slug}`;
+  const compatCss = MIRRORED_COMPAT_CSS_BY_SLUG[slug] ?? '';
 
   return html
     .replace(/<meta property="og:url" content="[^"]*"/i, `<meta property="og:url" content="https://raphamedian.com${withIndexHtml(currentRoute)}"`)
@@ -84,7 +100,8 @@ const transformMirroredHtml = (html, slug) => {
       /(<a\b[^>]*\shref=)(["'])\/(?!\/)([^"']*)\2/gi,
       (_, prefix, quote, pathname) => `${prefix}${quote}${rewriteAnchorHref(`/${pathname}`)}${quote}`
     )
-    .replace(/<head>/i, `<head>\n<meta name="generator" content="Codex mirrored snapshot of raphamedian.imweb.me">`);
+    .replace(/<head>/i, `<head>\n<meta name="generator" content="Codex mirrored snapshot of raphamedian.imweb.me">`)
+    .replace(/<\/head>/i, `${compatCss}\n</head>`);
 };
 
 const createRedirectHtml = (fromSlug, toSlug) => `<!DOCTYPE html>
