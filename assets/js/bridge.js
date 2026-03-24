@@ -1,37 +1,29 @@
-const source = 'https://www.raphamedian.com/';
-const shell = document.querySelector('[data-site-shell]');
-const frame = document.querySelector('[data-site-frame]');
-const fallback = document.querySelector('[data-site-fallback]');
-const sourceLinks = document.querySelectorAll('[data-open-source]');
-
-const showFallback = () => {
-  shell?.classList.add('is-fallback');
-  fallback?.removeAttribute('hidden');
-};
-
-for (const link of sourceLinks) {
-  link.href = source;
-}
-
-let loaded = false;
-const fallbackTimer = window.setTimeout(() => {
-  if (!loaded) {
-    showFallback();
-  }
-}, 12000);
-
-frame?.addEventListener('load', () => {
-  loaded = true;
-  window.clearTimeout(fallbackTimer);
-});
-
-frame?.addEventListener('error', () => {
-  window.clearTimeout(fallbackTimer);
-  showFallback();
-});
-
 window.__RAPHA_CLONE__ = {
-  mode: 'live-frame',
-  source,
+  source: 'https://www.raphamedian.com/',
+  mode: 'static-snapshot',
   updatedAt: '2026-03-25'
 };
+
+document.documentElement.style.scrollBehavior = 'smooth';
+document.body.classList.add('page_ready');
+
+const revealWidgets = () => {
+  const hiddenNodes = document.querySelectorAll(
+    "._widget_data, [data-widget-anim], [style*='visibility: hidden']"
+  );
+
+  for (const node of hiddenNodes) {
+    node.style.visibility = 'visible';
+    node.style.opacity = '1';
+    node.style.transform = 'none';
+    node.style.animation = 'none';
+  }
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', revealWidgets, { once: true });
+} else {
+  revealWidgets();
+}
+
+window.addEventListener('load', revealWidgets);

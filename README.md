@@ -1,6 +1,6 @@
 # homepage_rapha
 
-GitHub Pages wrapper for [raphamedian.com](https://www.raphamedian.com/) prepared to preserve the live layout and interactions as closely as possible on static hosting.
+Static snapshot rebuild of [raphamedian.com](https://www.raphamedian.com/) prepared for GitHub Pages.
 
 ## Folder structure
 
@@ -20,8 +20,7 @@ homepage_rapha/
 |   |-- capture-reference.mjs
 |   |-- compare-screenshots.mjs
 |   |-- generate-index.mjs
-|   |-- prepare-pages.mjs
-|   `-- site-frame-template.mjs
+|   `-- prepare-pages.mjs
 |-- 404.html
 |-- index.html
 |-- .nojekyll
@@ -49,7 +48,7 @@ http://127.0.0.1:4173
 npm run build
 ```
 
-This rebuilds `index.html` and `404.html` from the live frame template.
+This rebuilds `index.html` and `404.html` from `reference/playwright-snapshot.html`.
 
 ## GitHub Pages deploy
 
@@ -83,11 +82,6 @@ Generated screenshots are stored in `screenshots/`.
 
 ## Notes
 
-- The committed page uses a full-viewport iframe pointed at the live origin to preserve spacing, typography, hover states, animations, and popup behavior.
-- `assets/css/clone-fixes.css` styles only the outer frame shell and fallback state.
-- `assets/js/bridge.js` handles iframe load success and a minimal fallback if embedding is delayed or blocked.
-
-## Difference from the original
-
-- The GitHub Pages entry itself is only a shell. The rendered experience comes from the live site inside the frame.
-- If a browser blocks third-party framing in a specific environment, the fallback button opens the original site in a new tab.
+- The snapshot keeps remote asset URLs from the live site and CDN.
+- `assets/css/clone-fixes.css` restores spacing and forces animated widgets visible for static hosting.
+- `assets/js/bridge.js` reveals widgets that were captured with inline hidden styles.
