@@ -4,9 +4,8 @@ import { fileURLToPath } from 'node:url';
 
 const root = process.cwd();
 const IMWEB_ORIGIN = 'https://raphamedian.imweb.me';
-const MIRRORED_COMPAT_CSS_BY_SLUG = {
-  '23': `<style>
-.doz_sys #addFormw2025112066e541ac21198 .form-group.privacy .form-control {
+const createPrivacyCompatCss = (formId) => `<style>
+.doz_sys #${formId} .form-group.privacy .form-control {
   height: 160px !important;
   min-height: 160px !important;
   padding: 10px !important;
@@ -17,7 +16,10 @@ const MIRRORED_COMPAT_CSS_BY_SLUG = {
   word-break: keep-all !important;
   overflow-wrap: break-word !important;
 }
-</style>`
+</style>`;
+const MIRRORED_COMPAT_CSS_BY_SLUG = {
+  '23': createPrivacyCompatCss('addFormw2025112066e541ac21198'),
+  '26': createPrivacyCompatCss('addFormw20251120e6d8f7b7e69ce')
 };
 
 export const STATIC_ROUTE_SLUGS = [
