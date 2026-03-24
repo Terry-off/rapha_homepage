@@ -1,0 +1,11 @@
+body#doz_body #privacy .form-control {
+  height: 160px;
+  padding: 10px;
+  overflow: auto;
+  line-height: 25.7143px;
+}
+
+body#doz_body #doz_footer_wrap .inside {
+  padding-left: 10px;
+  padding-right: 10px;
+}

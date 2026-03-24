@@ -1,0 +1,21 @@
+{
+  "name": "homepage-rapha-clone",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "serve . -l 4173 --no-clipboard",
+    "build": "node scripts/generate-index.mjs",
+    "preview": "serve . -l 4173 --no-clipboard",
+    "prepare:pages": "node scripts/prepare-pages.mjs",
+    "capture:reference": "node scripts/capture-reference.mjs",
+    "capture:local": "node scripts/capture-local.mjs",
+    "compare": "node scripts/compare-screenshots.mjs"
+  },
+  "devDependencies": {
+    "pixelmatch": "^7.1.0",
+    "playwright": "^1.58.2",
+    "pngjs": "^7.0.0",
+    "serve": "^14.2.5"
+  }
+}
