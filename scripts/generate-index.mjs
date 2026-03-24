@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { generateSubpages } from './generate-subpages.mjs';
 
 const root = process.cwd();
 const sourcePath = path.join(root, 'reference', 'playwright-snapshot.html');
@@ -31,5 +32,7 @@ for (const page of pages) {
   const targetPath = path.join(root, page);
   fs.writeFileSync(targetPath, html);
 }
+
+generateSubpages();
 
 console.log(`Generated ${pages.join(', ')} from ${path.basename(sourcePath)}`);

@@ -141,6 +141,22 @@ body#doz_body .popup-banner-wrap .pop-img .del {
   cursor: pointer;
 }
 
+body#doz_body #doz_header_wrap,
+body#doz_body #doz_header {
+  z-index: 1600 !important;
+}
+
+body#doz_body #doz_header_wrap .dropdown-menu,
+body#doz_body #doz_header_wrap .sub_mega_drop,
+body#doz_body #doz_header_wrap ._main_menu {
+  z-index: 1601 !important;
+}
+
+body#doz_body .popup-banner-wrap,
+body#doz_body .popup-banner-wrap .pop-container {
+  z-index: 1200 !important;
+}
+
 body#doz_body .rapha-mobile-menu-toggle,
 body#doz_body .rapha-mobile-menu {
   display: none;

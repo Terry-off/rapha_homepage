@@ -10,6 +10,8 @@ if (typeof window.$ !== 'function') {
   window.$ = (value) => value;
 }
 
+const RAPHA_HOSTS = new Set(['raphamedian.com', 'www.raphamedian.com']);
+
 document.documentElement.style.scrollBehavior = 'smooth';
 document.body.classList.add('page_ready');
 
@@ -32,6 +34,30 @@ const openAbsoluteUrl = (url) => {
   }
 
   window.location.href = url;
+};
+
+const normalizeInternalLinks = () => {
+  const links = document.querySelectorAll('a[href]');
+
+  for (const link of links) {
+    const rawHref = link.getAttribute('href');
+
+    if (!rawHref || rawHref.startsWith('#') || rawHref.startsWith('tel:') || rawHref.startsWith('mailto:')) {
+      continue;
+    }
+
+    try {
+      const url = new URL(rawHref, window.location.href);
+
+      if (!RAPHA_HOSTS.has(url.hostname)) {
+        continue;
+      }
+
+      link.setAttribute('href', `${url.pathname}${url.search}${url.hash}`);
+    } catch {
+      // Ignore malformed href values in snapshot markup.
+    }
+  }
 };
 
 if (typeof window.SITE.openPolicy !== 'function') {
@@ -401,6 +427,7 @@ if (document.readyState === 'loading') {
     'DOMContentLoaded',
     () => {
       revealWidgets();
+      normalizeInternalLinks();
       restoreSavedPopupState();
       restoreDesktopMenus();
       buildMobileMenu();
@@ -410,6 +437,7 @@ if (document.readyState === 'loading') {
   );
 } else {
   revealWidgets();
+  normalizeInternalLinks();
   restoreSavedPopupState();
   restoreDesktopMenus();
   buildMobileMenu();
@@ -418,6 +446,7 @@ if (document.readyState === 'loading') {
 
 window.addEventListener('load', () => {
   revealWidgets();
+  normalizeInternalLinks();
   restoreSavedPopupState();
   restoreDesktopMenus();
   buildMobileMenu();
@@ -425,6 +454,7 @@ window.addEventListener('load', () => {
 });
 
 window.addEventListener('resize', () => {
+  normalizeInternalLinks();
   restoreDesktopMenus();
   restoreVisualCarousel();
 });
