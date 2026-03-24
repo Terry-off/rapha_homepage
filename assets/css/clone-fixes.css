@@ -146,7 +146,7 @@ body#doz_body .rapha-mobile-menu {
   display: none;
 }
 
-@media (min-width: 992px) and (max-width: 1280px) {
+@media (min-width: 992px) {
   body#doz_body #inline_header_normal .inline-inside,
   body#doz_body #inline_header_fixed .inline-inside {
     display: flex !important;
@@ -193,6 +193,7 @@ body#doz_body .rapha-mobile-menu {
   body#doz_body #inline_header_normal ._inline_menu_container > .viewport-nav.desktop._main_menu > li,
   body#doz_body #inline_header_fixed ._inline_menu_container > .viewport-nav.desktop._main_menu > li {
     flex: 0 1 auto;
+    display: block;
   }
 
   body#doz_body #inline_header_normal ._inline_menu_container > .viewport-nav.desktop._main_menu > li._more_menu,
