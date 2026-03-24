@@ -26,6 +26,16 @@ body#doz_body #privacy .form-control {
   line-height: 25.7143px;
 }
 
+body#doz_body #text_w20251118a5c88ec07d17c .text-table > div > p {
+  margin: 0 !important;
+  line-height: 1.28 !important;
+}
+
+body#doz_body #text_w20251118a5c88ec07d17c .text-table > div > p span,
+body#doz_body #text_w20251118a5c88ec07d17c .text-table > div > p strong {
+  line-height: inherit !important;
+}
+
 body#doz_body ._widget_data.wg_animated,
 body#doz_body ._widget_data.animated,
 body#doz_body .animated.wg_animated,
@@ -44,4 +54,17 @@ body#doz_body .scroll-animate [class*='slide'] {
   opacity: 1 !important;
   transform: none !important;
   animation: none !important;
+}
+
+body#doz_body .popup-banner-wrap .pop-container {
+  pointer-events: auto;
+}
+
+body#doz_body .popup-banner-wrap .pop-container.is-hidden {
+  display: none !important;
+}
+
+body#doz_body .popup-banner-wrap .btn-group .btn,
+body#doz_body .popup-banner-wrap .pop-img .del {
+  cursor: pointer;
 }
