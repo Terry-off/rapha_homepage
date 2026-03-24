@@ -105,6 +105,75 @@ body#doz_body .rapha-mobile-menu {
   display: none;
 }
 
+@media (min-width: 992px) and (max-width: 1280px) {
+  body#doz_body #inline_header_normal .inline-inside,
+  body#doz_body #inline_header_fixed .inline-inside {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  body#doz_body #inline_header_normal .inline-col-group-left,
+  body#doz_body #inline_header_fixed .inline-col-group-left {
+    width: min(28vw, 300px) !important;
+    min-width: 220px;
+    flex: 0 0 auto;
+  }
+
+  body#doz_body #inline_header_normal .inline-col-group-right,
+  body#doz_body #inline_header_fixed .inline-col-group-right {
+    width: min(32vw, 360px) !important;
+    min-width: 300px;
+    flex: 0 0 auto;
+  }
+
+  body#doz_body #inline_header_normal .inline-col-group-center,
+  body#doz_body #inline_header_fixed .inline-col-group-center {
+    width: auto !important;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  body#doz_body #inline_header_normal .inline_widget.logo img,
+  body#doz_body #inline_header_fixed .inline_widget.logo img {
+    width: min(100%, 220px) !important;
+  }
+
+  body#doz_body #inline_header_normal ._inline_menu_container > .viewport-nav.desktop._main_menu,
+  body#doz_body #inline_header_fixed ._inline_menu_container > .viewport-nav.desktop._main_menu {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: 100%;
+    white-space: nowrap;
+  }
+
+  body#doz_body #inline_header_normal ._inline_menu_container > .viewport-nav.desktop._main_menu > li,
+  body#doz_body #inline_header_fixed ._inline_menu_container > .viewport-nav.desktop._main_menu > li {
+    flex: 0 1 auto;
+  }
+
+  body#doz_body #inline_header_normal ._inline_menu_container > .viewport-nav.desktop._main_menu > li._more_menu,
+  body#doz_body #inline_header_fixed ._inline_menu_container > .viewport-nav.desktop._main_menu > li._more_menu {
+    display: none !important;
+  }
+
+  body#doz_body #inline_header_normal ._inline_menu_container > .viewport-nav.desktop._main_menu > li > a,
+  body#doz_body #inline_header_fixed ._inline_menu_container > .viewport-nav.desktop._main_menu > li > a {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  body#doz_body #inline_header_normal ._inline_menu_container > .viewport-nav.desktop._main_menu > li > a .plain_name,
+  body#doz_body #inline_header_fixed ._inline_menu_container > .viewport-nav.desktop._main_menu > li > a .plain_name {
+    display: inline-block;
+    font-size: 17px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+}
+
 @media (max-width: 991px) {
   body#doz_body #doz_footer_wrap,
   body#doz_body #doz_footer,
