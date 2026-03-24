@@ -57,6 +57,16 @@ body#doz_body #text_w20251118a5c88ec07d17c .text-table > div > p strong {
   line-height: inherit !important;
 }
 
+body#doz_body #text_w20251120612a0da1d04a5 .text-table > div > p {
+  margin: 0 !important;
+  line-height: 1.28 !important;
+}
+
+body#doz_body #text_w20251120612a0da1d04a5 .text-table > div > p span,
+body#doz_body #text_w20251120612a0da1d04a5 .text-table > div > p strong {
+  line-height: inherit !important;
+}
+
 body#doz_body ._widget_data.wg_animated,
 body#doz_body ._widget_data.animated,
 body#doz_body .animated.wg_animated,

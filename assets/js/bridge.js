@@ -233,6 +233,77 @@ const buildMobileMenu = () => {
   document.body.append(toggle, menu);
 };
 
+const restoreVisualCarousel = () => {
+  const section = document.querySelector('#s20251120fc103ab30a460');
+  const outer = section?.querySelector('.owl-stage-outer');
+  const stage = section?.querySelector('.owl-stage');
+
+  if (!section || !outer || !stage) {
+    return;
+  }
+
+  const items = [...stage.querySelectorAll(':scope > .owl-item')];
+  const realItems = items.filter((item) => !item.classList.contains('cloned'));
+  const dots = [...section.querySelectorAll('.owl-dot')];
+
+  if (!items.length || !realItems.length) {
+    return;
+  }
+
+  const getActiveRealIndex = () => {
+    const activeDotIndex = dots.findIndex((dot) => dot.classList.contains('active'));
+
+    if (activeDotIndex >= 0) {
+      return activeDotIndex;
+    }
+
+    const activeRealItemIndex = realItems.findIndex((item) => item.classList.contains('active'));
+    return activeRealItemIndex >= 0 ? activeRealItemIndex : 0;
+  };
+
+  const applyLayout = (requestedIndex) => {
+    const width = Math.round(outer.getBoundingClientRect().width);
+
+    if (!width) {
+      return;
+    }
+
+    const realIndex = Math.max(0, Math.min(requestedIndex, realItems.length - 1));
+    const activeItem = realItems[realIndex];
+    const stageIndex = items.indexOf(activeItem);
+
+    for (const item of items) {
+      item.style.width = `${width}px`;
+      item.style.marginRight = '0px';
+      item.classList.toggle('active', item === activeItem);
+    }
+
+    stage.style.width = `${width * items.length}px`;
+    stage.style.transform = `translate3d(${-width * stageIndex}px, 0px, 0px)`;
+    stage.style.transition = 'transform 450ms ease';
+    section.dataset.raphaCarouselIndex = String(realIndex);
+
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === realIndex);
+      dot.style.cursor = 'pointer';
+    });
+  };
+
+  if (section.dataset.raphaCarouselBound !== 'true') {
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', (event) => {
+        event.preventDefault();
+        applyLayout(index);
+      });
+    });
+
+    section.dataset.raphaCarouselBound = 'true';
+  }
+
+  const savedIndex = Number(section.dataset.raphaCarouselIndex);
+  applyLayout(Number.isFinite(savedIndex) ? savedIndex : getActiveRealIndex());
+};
+
 if (document.readyState === 'loading') {
   document.addEventListener(
     'DOMContentLoaded',
@@ -240,6 +311,7 @@ if (document.readyState === 'loading') {
       revealWidgets();
       restoreSavedPopupState();
       buildMobileMenu();
+      restoreVisualCarousel();
     },
     { once: true }
   );
@@ -247,10 +319,16 @@ if (document.readyState === 'loading') {
   revealWidgets();
   restoreSavedPopupState();
   buildMobileMenu();
+  restoreVisualCarousel();
 }
 
 window.addEventListener('load', () => {
   revealWidgets();
   restoreSavedPopupState();
   buildMobileMenu();
+  restoreVisualCarousel();
+});
+
+window.addEventListener('resize', () => {
+  restoreVisualCarousel();
 });
