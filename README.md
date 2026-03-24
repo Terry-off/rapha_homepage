@@ -52,22 +52,20 @@ This rebuilds `index.html` from `reference/playwright-snapshot.html`.
 
 ## GitHub Pages deploy
 
-```bash
-npm run build
-npm run prepare:pages
-```
+This repository can be published directly from the repository root.
 
-The repository already includes [deploy-pages.yml](C:\Users\JJhome\Desktop\CODE PROJECT\homepage_rapha\.github\workflows\deploy-pages.yml), so after pushing to GitHub:
+On GitHub:
 
-1. Open the repository settings on GitHub.
-2. Go to `Pages`.
-3. Set the source to `GitHub Actions` if it is not already selected.
-4. Push to `main` or `master`.
+1. Open `Settings`
+2. Open `Pages`
+3. Under `Build and deployment`, set `Source` to `Deploy from a branch`
+4. Select branch `main`
+5. Select folder `/(root)`
+6. Save
 
-Deployment artifact contents:
+The committed static entry files are:
 
 - `index.html`
-- `404.html`
 - `assets/`
 - `.nojekyll`
 
