@@ -4,6 +4,52 @@ import { fileURLToPath } from 'node:url';
 
 const root = process.cwd();
 const IMWEB_ORIGIN = 'https://raphamedian.imweb.me';
+const MIRRORED_GLOBAL_COMPAT_CSS = `<style>
+body#doz_body #doz_footer_wrap .footer-section {
+  padding: 50px 0 !important;
+}
+
+body#doz_body #doz_footer_wrap,
+body#doz_body #doz_footer,
+body#doz_body #doz_footer .footer-section,
+body#doz_body #doz_footer .inside,
+body#doz_body #doz_footer .doz_row {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+body#doz_body #doz_footer .inside,
+body#doz_body #doz_footer .doz_row {
+  display: flow-root !important;
+}
+
+body#doz_body #doz_footer .inside::after,
+body#doz_body #doz_footer .doz_row::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+body#doz_body #doz_footer_wrap .inside {
+  margin-left: 130px !important;
+  margin-right: 130px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+@media (max-width: 991px) {
+  body#doz_body #doz_footer_wrap,
+  body#doz_body #doz_footer,
+  body#doz_body #doz_footer .footer-section {
+    min-height: 220px !important;
+  }
+
+  body#doz_body #doz_footer_wrap .inside {
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+  }
+}
+</style>`;
 const createPrivacyCompatCss = (formId) => `<style>
 .doz_sys #${formId} .form-group.privacy .form-control {
   height: 160px !important;
@@ -85,7 +131,7 @@ const rewriteAnchorHref = (rawPath) => {
 
 const transformMirroredHtml = (html, slug) => {
   const currentRoute = `/${slug}`;
-  const compatCss = MIRRORED_COMPAT_CSS_BY_SLUG[slug] ?? '';
+  const compatCss = `${MIRRORED_GLOBAL_COMPAT_CSS}${MIRRORED_COMPAT_CSS_BY_SLUG[slug] ?? ''}`;
 
   return html
     .replace(/<meta property="og:url" content="[^"]*"/i, `<meta property="og:url" content="https://raphamedian.com${withIndexHtml(currentRoute)}"`)
