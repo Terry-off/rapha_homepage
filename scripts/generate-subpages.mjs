@@ -76,6 +76,7 @@ const createPrivacyCompatCss = (formId) => `<style>
 }
 </style>`;
 const MIRRORED_COMPAT_CSS_BY_SLUG = {
+  '21': createPrivacyCompatCss('addFormw202511201f60b6847a34b'),
   '23': createPrivacyCompatCss('addFormw2025112066e541ac21198'),
   '26': createPrivacyCompatCss('addFormw20251120e6d8f7b7e69ce')
 };
