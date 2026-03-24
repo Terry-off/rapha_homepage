@@ -84,10 +84,7 @@ const transformMirroredHtml = (html, slug) => {
       /(<a\b[^>]*\shref=)(["'])\/(?!\/)([^"']*)\2/gi,
       (_, prefix, quote, pathname) => `${prefix}${quote}${rewriteAnchorHref(`/${pathname}`)}${quote}`
     )
-    .replace(/<script\b(?![^>]*type=["']application\/ld\+json["'])[\s\S]*?<\/script>/gi, '')
-    .replace(/<head>/i, `<head>\n<meta name="generator" content="Codex mirrored snapshot of raphamedian.imweb.me">`)
-    .replace(/<\/head>/i, `\n<link rel="stylesheet" href="/assets/css/clone-fixes.css">\n</head>`)
-    .replace(/<\/body>/i, `\n<script type="module" src="/assets/js/bridge.js"></script>\n</body>`);
+    .replace(/<head>/i, `<head>\n<meta name="generator" content="Codex mirrored snapshot of raphamedian.imweb.me">`);
 };
 
 const createRedirectHtml = (fromSlug, toSlug) => `<!DOCTYPE html>
@@ -144,4 +141,3 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   await generateSubpages();
   console.log(`Generated ${STATIC_ROUTE_SLUGS.length} mirrored submenu routes`);
 }
-
