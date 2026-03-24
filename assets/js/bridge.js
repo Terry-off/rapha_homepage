@@ -284,6 +284,13 @@ const restoreVisualCarousel = () => {
     return;
   }
 
+  const options = {
+    effectWaitMs: 4000,
+    effectTimeMs: 700
+  };
+
+  section.classList.add('rapha-visual-fade');
+
   const getActiveRealIndex = () => {
     const activeDotIndex = dots.findIndex((dot) => dot.classList.contains('active'));
 
@@ -295,27 +302,48 @@ const restoreVisualCarousel = () => {
     return activeRealItemIndex >= 0 ? activeRealItemIndex : 0;
   };
 
-  const applyLayout = (requestedIndex) => {
+  const applyLayout = (requestedIndex, immediate = false) => {
     const width = Math.round(outer.getBoundingClientRect().width);
+    const visualHeight = Math.round(
+      section.getBoundingClientRect().height ||
+        section.querySelector('.visual_section')?.getBoundingClientRect().height ||
+        0
+    );
 
-    if (!width) {
+    if (!width || !visualHeight) {
       return;
     }
 
     const realIndex = Math.max(0, Math.min(requestedIndex, realItems.length - 1));
-    const activeItem = realItems[realIndex];
-    const stageIndex = items.indexOf(activeItem);
 
     for (const item of items) {
-      item.style.width = `${width}px`;
       item.style.marginRight = '0px';
-      item.classList.toggle('active', item === activeItem);
+      item.style.width = `${width}px`;
     }
 
-    stage.style.width = `${width * items.length}px`;
-    stage.style.transform = `translate3d(${-width * stageIndex}px, 0px, 0px)`;
-    stage.style.transition = 'transform 450ms ease';
+    outer.style.height = `${visualHeight}px`;
+    outer.style.minHeight = `${visualHeight}px`;
+    stage.style.width = `${width}px`;
+    stage.style.height = `${visualHeight}px`;
+    stage.style.minHeight = `${visualHeight}px`;
+    stage.style.transform = 'none';
+    stage.style.transition = 'none';
     section.dataset.raphaCarouselIndex = String(realIndex);
+
+    realItems.forEach((item, index) => {
+      item.classList.toggle('active', index === realIndex);
+      item.classList.toggle('rapha-is-active', index === realIndex);
+      item.setAttribute('aria-hidden', index === realIndex ? 'false' : 'true');
+      item.style.transitionDuration = `${immediate ? 0 : options.effectTimeMs}ms`;
+      item.style.height = `${visualHeight}px`;
+    });
+
+    items
+      .filter((item) => item.classList.contains('cloned'))
+      .forEach((item) => {
+        item.classList.remove('active', 'rapha-is-active');
+        item.setAttribute('aria-hidden', 'true');
+      });
 
     dots.forEach((dot, index) => {
       dot.classList.toggle('active', index === realIndex);
@@ -323,19 +351,49 @@ const restoreVisualCarousel = () => {
     });
   };
 
+  const startAutoplay = () => {
+    if (section.__raphaCarouselTimer) {
+      window.clearInterval(section.__raphaCarouselTimer);
+    }
+
+    section.__raphaCarouselTimer = window.setInterval(() => {
+      const currentIndex = Number(section.dataset.raphaCarouselIndex || '0');
+      const nextIndex = (currentIndex + 1) % realItems.length;
+      applyLayout(nextIndex);
+    }, options.effectWaitMs);
+  };
+
+  const stopAutoplay = () => {
+    if (section.__raphaCarouselTimer) {
+      window.clearInterval(section.__raphaCarouselTimer);
+      section.__raphaCarouselTimer = 0;
+    }
+  };
+
   if (section.dataset.raphaCarouselBound !== 'true') {
     dots.forEach((dot, index) => {
       dot.addEventListener('click', (event) => {
         event.preventDefault();
         applyLayout(index);
+        startAutoplay();
       });
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stopAutoplay();
+        return;
+      }
+
+      startAutoplay();
     });
 
     section.dataset.raphaCarouselBound = 'true';
   }
 
   const savedIndex = Number(section.dataset.raphaCarouselIndex);
-  applyLayout(Number.isFinite(savedIndex) ? savedIndex : getActiveRealIndex());
+  applyLayout(Number.isFinite(savedIndex) ? savedIndex : getActiveRealIndex(), true);
+  startAutoplay();
 };
 
 if (document.readyState === 'loading') {

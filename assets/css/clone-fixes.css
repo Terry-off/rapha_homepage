@@ -78,6 +78,47 @@ body#doz_body [style*='visibility: hidden'] {
   animation: none !important;
 }
 
+body#doz_body #s20251120fc103ab30a460.rapha-visual-fade .owl-stage-outer {
+  position: relative;
+  overflow: hidden;
+}
+
+body#doz_body #s20251120fc103ab30a460.rapha-visual-fade .owl-stage {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
+}
+
+body#doz_body #s20251120fc103ab30a460.rapha-visual-fade .owl-stage > .owl-item {
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  margin-right: 0 !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 700ms ease, visibility 700ms ease;
+}
+
+body#doz_body #s20251120fc103ab30a460.rapha-visual-fade .owl-stage > .owl-item.rapha-is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+body#doz_body #s20251120fc103ab30a460.rapha-visual-fade .owl-stage > .owl-item.cloned {
+  display: none !important;
+}
+
+body#doz_body #s20251120fc103ab30a460.rapha-visual-fade .owl-stage > .owl-item > .item.holder.section,
+body#doz_body #s20251120fc103ab30a460.rapha-visual-fade .owl-stage > .owl-item > .item.holder.section > .op,
+body#doz_body #s20251120fc103ab30a460.rapha-visual-fade .owl-stage > .owl-item > .item.holder.section > .op > .header-content {
+  height: 100% !important;
+}
+
 body#doz_body .scroll-animate,
 body#doz_body .scroll-animate [class*='fade'],
 body#doz_body .scroll-animate [class*='slide'] {
